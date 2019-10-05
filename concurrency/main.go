@@ -17,12 +17,19 @@ func saying(word string, wg *sync.WaitGroup) {
 }
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(2)
+	c := make(chan string)
 
-	go saying("something", &wg)
-	go saying("book fair", &wg)
-	fmt.Println("I'm listening.")
+	go func() {
+		fmt.Println("hello")
+		data := <-c
+		fmt.Println("data in channel: ", data)
+	}()
 
-	wg.Wait()
+	fmt.Println("before send")
+	time.Sleep(1 * time.Second)
+	c <- "some data."
+	fmt.Println("sent")
+
+	time.Sleep(1 * time.Second)
+
 }
