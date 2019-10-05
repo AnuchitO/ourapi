@@ -3,15 +3,12 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"sync"
 	"time"
 )
 
-func saying(word string, wg *sync.WaitGroup) {
-	defer wg.Done()
-
+func saying(word string, c chan string) {
 	for i := 0; i < 5; i++ {
-		fmt.Printf("you said: %s : %d\n", word, i)
+		c <- fmt.Sprintf("you said: %s : %d", word, i)
 		time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
 	}
 }
@@ -19,17 +16,11 @@ func saying(word string, wg *sync.WaitGroup) {
 func main() {
 	c := make(chan string)
 
-	go func() {
-		fmt.Println("hello")
-		data := <-c // receive
-		fmt.Println("data in channel: ", data)
-	}()
+	go saying("book fair", c)
 
-	fmt.Println("before send")
-	time.Sleep(10 * time.Second)
-	c <- "some data." // sending
-	fmt.Println("sent")
+	for i := 0; i < 5; i++ {
+		fmt.Println("You say:", <-c)
+	}
 
-	time.Sleep(1 * time.Second)
-
+	fmt.Println("Okay.")
 }

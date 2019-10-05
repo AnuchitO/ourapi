@@ -30,5 +30,4 @@ func main() {
 	table <- &Ball{}
 
 	time.Sleep(3 * time.Second)
-	<-table
 }
