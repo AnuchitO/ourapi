@@ -22,5 +22,13 @@ func player(name string, table chan *Ball) {
 }
 
 func main() {
+	table := make(chan *Ball)
 
+	go player("fon", table)
+	go player("se", table)
+
+	table <- &Ball{}
+
+	time.Sleep(1 * time.Second)
+	<-table
 }
