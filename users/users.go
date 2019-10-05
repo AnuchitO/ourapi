@@ -34,7 +34,7 @@ func (u *usersAPI) getUsers(c echo.Context) error {
 
 func GetUsers(c echo.Context) error {
 	api := &usersAPI{
-		service: typicode.NewGet(),
+		service: typicode.Get("/users"),
 	}
 	return api.getUsers(c)
 }
