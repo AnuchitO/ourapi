@@ -1,7 +1,7 @@
 package users
 
 import (
-	"io/ioutil"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"testing"
@@ -19,24 +19,24 @@ func (m *mockContext) JSON(code int, i interface{}) error {
 	return nil
 }
 
-func mockGet(url string) (*http.Response, error) {
-	body := ioutil.NopCloser(strings.NewReader(`[{
+type mockTypicode struct {
+}
+
+func (tc *mockTypicode) Decode(result interface{}) error {
+	body := strings.NewReader(`[{
 		"id": 1,
 		"name": "Leanne Graham",
 		"username": "Bret",
 		"email": "Sincere@april.biz",
 		"phone": "1-770-736-8031 x56442"
-	}]`))
-
-	resp := &http.Response{
-		Body: body,
-	}
-	return resp, nil
+	}]`)
+	return json.NewDecoder(body).Decode(&result)
 }
+
 func TestGetAllUsersHandler(t *testing.T) {
 	c := &mockContext{}
 	api := &usersAPI{
-		get: mockGet,
+		service: &mockTypicode{},
 	}
 
 	api.getUsers(c)
