@@ -29,6 +29,10 @@ func fanIn(input1, input2 <-chan string) <-chan string {
 				c <- s
 			case y := <-input2:
 				c <- y
+			case <-time.After(300 * time.Millisecond):
+				fmt.Println("too slow.")
+				close(c)
+				return
 			}
 		}
 	}()
@@ -43,7 +47,9 @@ func main() {
 	c := fanIn(book, fon)
 
 	for i := 0; i < 10; i++ {
-		fmt.Println(<-c)
+		if data, ok := <-c; ok {
+			fmt.Println("OK", data)
+		}
 	}
 
 	fmt.Println("Okay.")
