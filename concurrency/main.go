@@ -21,13 +21,13 @@ func main() {
 
 	go func() {
 		fmt.Println("hello")
-		data := <-c
+		data := <-c // receive
 		fmt.Println("data in channel: ", data)
 	}()
 
 	fmt.Println("before send")
-	time.Sleep(1 * time.Second)
-	c <- "some data."
+	time.Sleep(10 * time.Second)
+	c <- "some data." // sending
 	fmt.Println("sent")
 
 	time.Sleep(1 * time.Second)
