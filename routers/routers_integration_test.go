@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/AnuchitO/ourapi/users"
 )
 
 func TestGetAllUsers(t *testing.T) {
@@ -14,7 +16,7 @@ func TestGetAllUsers(t *testing.T) {
 
 	e.ServeHTTP(resp, req)
 
-	var uu []User
+	var uu []users.User
 	json.NewDecoder(resp.Body).Decode(&uu)
 
 	if http.StatusOK != resp.Code {
