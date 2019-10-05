@@ -15,7 +15,7 @@ func player(name string, table chan *Ball) {
 		ball.hits++
 
 		fmt.Println(name, ball.hits)
-		time.Sleep(100 * time.Microsecond)
+		time.Sleep(1 * time.Second)
 
 		table <- ball
 	}
@@ -29,6 +29,6 @@ func main() {
 
 	table <- &Ball{}
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(3 * time.Second)
 	<-table
 }
