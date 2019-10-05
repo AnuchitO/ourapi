@@ -30,7 +30,6 @@ func (tc *typicode) Decode(result interface{}) error {
 		return err
 	}
 	return json.NewDecoder(resp.Body).Decode(&result)
-
 }
 
 type usersAPI struct {
@@ -38,12 +37,12 @@ type usersAPI struct {
 }
 
 func (u *usersAPI) getUsers(c echo.Context) error {
-
 	uu := []User{}
 	err := u.service.Decode(&uu)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, uu)
 }
 
