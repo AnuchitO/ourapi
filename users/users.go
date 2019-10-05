@@ -1,6 +1,7 @@
 package users
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -15,14 +16,16 @@ type User struct {
 }
 
 func GetUsers(c echo.Context) error {
-	uu := []User{
-		User{
-			ID:       1,
-			Name:     "Leanne Graham",
-			Username: "Bret",
-			Email:    "Sincere@april.biz",
-			Phone:    "1-770-736-8031 x56442",
-		},
+	resp, err := http.Get("https://jsonplaceholder.typicode.com/users")
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
 	}
+
+	uu := []User{}
+	err = json.NewDecoder(resp.Body).Decode(&uu)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
 	return c.JSON(http.StatusOK, uu)
 }

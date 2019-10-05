@@ -1,4 +1,6 @@
-package routers
+// +build integration
+
+package routers_test
 
 import (
 	"encoding/json"
@@ -6,11 +8,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/AnuchitO/ourapi/routers"
 	"github.com/AnuchitO/ourapi/users"
 )
 
 func TestGetAllUsers(t *testing.T) {
-	e := NewRouter()
+	e := routers.NewRouter()
 	resp := httptest.NewRecorder()
 	req := httptest.NewRequest(http.MethodGet, "/users", nil)
 
