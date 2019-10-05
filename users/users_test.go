@@ -11,10 +11,12 @@ import (
 type mockContext struct {
 	echo.Context
 	statusCode int
+	body       interface{}
 }
 
 func (m *mockContext) JSON(code int, i interface{}) error {
 	m.statusCode = code
+	m.body = i
 	return nil
 }
 
@@ -43,8 +45,14 @@ func TestGetAllUsersHandler(t *testing.T) {
 
 		api.getUsers(c)
 
+		uu, _ := c.body.([]User)
+
 		if c.statusCode != http.StatusOK {
 			t.Errorf("expect status %d, but got %d", http.StatusOK, c.statusCode)
+		}
+
+		if uu[0].Username != "Bret" {
+			t.Errorf("expected username: %s, but got %s", "Bret", uu[0].Username)
 		}
 	})
 
