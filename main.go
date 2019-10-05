@@ -27,10 +27,15 @@ func GetUsers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, uu)
 }
-func main() {
+
+func NewRouter() *echo.Echo {
 	e := echo.New()
 
 	e.GET("/users", GetUsers)
 
+	return e
+}
+func main() {
+	e := NewRouter()
 	log.Fatal(e.Start(":1323"))
 }
