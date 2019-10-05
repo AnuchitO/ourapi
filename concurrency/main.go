@@ -19,11 +19,32 @@ func saying(word string) <-chan string { // receive-only
 	return c
 }
 
-func main() {
-	c := saying("book fair")
+func fanIn(input1, input2 <-chan string) <-chan string {
+	c := make(chan string)
 
-	for i := 0; i < 5; i++ {
-		fmt.Println("You say:", <-c)
+	go func() {
+		for {
+			c <- <-input1
+		}
+	}()
+
+	go func() {
+		for {
+			c <- <-input2
+		}
+	}()
+
+	return c
+}
+
+func main() {
+	book := saying("book fair")
+	fon := saying("Fon")
+
+	c := fanIn(book, fon)
+
+	for i := 0; i < 10; i++ {
+		fmt.Println(<-c)
 	}
 
 	fmt.Println("Okay.")
