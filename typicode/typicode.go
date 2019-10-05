@@ -2,7 +2,6 @@ package typicode
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -10,21 +9,35 @@ type Decoder interface {
 	Decode(result interface{}) error
 }
 
-type typicode struct {
+type Doer interface {
+	Do() (resp *http.Response, err error)
+}
+
+type doGet struct {
 	url string
 }
 
+func (do *doGet) Do() (resp *http.Response, err error) {
+	return http.Get(do.url)
+}
+
+type typicode struct {
+	client Doer
+}
+
 func (tc *typicode) Decode(result interface{}) error {
-	resp, err := http.Get(tc.url)
+	resp, err := tc.client.Do()
 	if err != nil {
-		fmt.Println("error requset", err)
 		return err
 	}
+
 	return json.NewDecoder(resp.Body).Decode(&result)
 }
 
 func Get(path string) *typicode {
 	return &typicode{
-		url: "https://jsonplaceholder.typicode.com" + path,
+		client: &doGet{
+			url: "https://jsonplaceholder.typicode.com" + path,
+		},
 	}
 }
