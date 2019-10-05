@@ -15,8 +15,12 @@ type User struct {
 	Phone    string `json:"phone"`
 }
 
-func GetUsers(c echo.Context) error {
-	resp, err := http.Get("https://jsonplaceholder.typicode.com/users")
+type usersAPI struct {
+	get func(url string) (resp *http.Response, err error)
+}
+
+func (u *usersAPI) getUsers(c echo.Context) error {
+	resp, err := u.get("https://jsonplaceholder.typicode.com/users")
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -28,4 +32,11 @@ func GetUsers(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, uu)
+}
+
+func GetUsers(c echo.Context) error {
+	api := &usersAPI{
+		get: http.Get,
+	}
+	return api.getUsers(c)
 }
