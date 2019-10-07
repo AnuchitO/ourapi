@@ -21,11 +21,11 @@ func (do *doGet) Do() (resp *http.Response, err error) {
 	return http.Get(do.url)
 }
 
-type typicode struct {
+type getTypicode struct {
 	client Doer
 }
 
-func (tc *typicode) Decode(result interface{}) error {
+func (tc *getTypicode) Decode(result interface{}) error {
 	resp, err := tc.client.Do()
 	if err != nil {
 		return err
@@ -34,8 +34,8 @@ func (tc *typicode) Decode(result interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(&result)
 }
 
-func Get(path string) *typicode {
-	return &typicode{
+func Get(path string) *getTypicode {
+	return &getTypicode{
 		client: &doGet{
 			url: "https://jsonplaceholder.typicode.com" + path,
 		},

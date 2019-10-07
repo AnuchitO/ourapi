@@ -17,7 +17,7 @@ func (m *mockDoGet) Do() (resp *http.Response, err error) {
 }
 
 func TestDoGetTypicode(t *testing.T) {
-	tc := &typicode{
+	tc := &getTypicode{
 		client: &mockDoGet{},
 	}
 	result := struct {

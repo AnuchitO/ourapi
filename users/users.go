@@ -33,7 +33,7 @@ func (u *usersAPI) getUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, uu)
 }
 
-func GetUsers(c echo.Context) error {
+func GetAllUsers(c echo.Context) error {
 	api := &usersAPI{
 		service: typicode.Get("/users"),
 	}

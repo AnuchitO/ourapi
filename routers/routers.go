@@ -8,7 +8,7 @@ import (
 func NewRouter() *echo.Echo {
 	e := echo.New()
 
-	e.GET("/users", users.GetUsers)
+	e.GET("/users", users.GetAllUsers)
 
 	return e
 }
