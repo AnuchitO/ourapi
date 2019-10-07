@@ -18,6 +18,7 @@ type User struct {
 type Decoder interface {
 	Decode(result interface{}) error
 }
+
 type usersAPI struct {
 	service Decoder
 }

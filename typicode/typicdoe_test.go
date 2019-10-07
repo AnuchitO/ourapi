@@ -15,6 +15,7 @@ func (m *mockDoGet) Do() (resp *http.Response, err error) {
 		Body: ioutil.NopCloser(strings.NewReader(`{"name": "AnuchitO"}`)),
 	}, nil
 }
+
 func TestDoGetTypicode(t *testing.T) {
 	tc := &typicode{
 		client: &mockDoGet{},
